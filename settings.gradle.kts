@@ -2,7 +2,7 @@ rootProject.name = "liveStreaming"
 
 include(
     "chatting",
-    "user",
+    "member",
 )
 
 pluginManagement {

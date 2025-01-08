@@ -1,4 +1,4 @@
-package io.livestreaming.api.user
+package io.livestreaming.api.member
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

@@ -1,10 +1,10 @@
-package io.livestreaming.api.user
+package io.livestreaming.api.member
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class UserApplicationTests {
+class MemberApplicationTests {
 
     @Test
     fun contextLoads() {
