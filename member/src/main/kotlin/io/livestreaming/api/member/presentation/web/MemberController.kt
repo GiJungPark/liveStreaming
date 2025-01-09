@@ -1,20 +1,17 @@
 package io.livestreaming.api.member.presentation.web
 
-import io.livestreaming.api.member.application.CreateMemberCommand
-import io.livestreaming.api.member.application.CreateMemberUseCase
+import io.livestreaming.api.member.application.*
 import io.livestreaming.api.member.presentation.web.request.CreateMemberRequest
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import io.livestreaming.api.member.presentation.web.request.LoginRequest
+import org.springframework.web.bind.annotation.*
 
 @RestController("/members")
 class MemberController(
     private val createMemberUseCase: CreateMemberUseCase,
+    private val readMemberUseCase: ReadMemberUseCase
 ) {
     @PostMapping
-    fun createMember(
-        @RequestBody request: CreateMemberRequest,
-    ) {
+    fun createMember(@RequestBody request: CreateMemberRequest) {
         val command = CreateMemberCommand.of(
             email = request.email,
             password = request.password,
@@ -24,4 +21,20 @@ class MemberController(
         createMemberUseCase.create(command)
     }
 
+    @GetMapping("/{id}")
+    fun readMemberById(@PathVariable("id") id: String) {
+        val command = ReadMemberByIdCommand.of(id)
+
+        readMemberUseCase.read(command)
+    }
+
+    @PostMapping("/login")
+    fun login(@RequestBody request: LoginRequest) {
+        val command = ReadMemberByCredentialsCommand.of(
+            email = request.email,
+            password = request.password
+        )
+
+        readMemberUseCase.read(command)
+    }
 }
