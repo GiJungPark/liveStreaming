@@ -14,7 +14,7 @@ class Password private constructor(val value: String) {
 
     // TODO: 패스워드 규칙 체크하는 로직 추후 보강
     private fun validate(value: String) {
-        require(value.isNotBlank()) { "이메일이 비어있습니다." }
+        require(value.isNotBlank()) { "패스워드가 비어있습니다." }
     }
 
     override fun equals(other: Any?): Boolean {
