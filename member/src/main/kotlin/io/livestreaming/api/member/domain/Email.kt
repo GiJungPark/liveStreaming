@@ -16,7 +16,7 @@ class Email private constructor(val value: String) {
 
     // TODO: 이메일 규칙 체크하는 로직 추후 보강
     private fun validate(value: String) {
-        require (value.isNotBlank()) { "이require(EMAIL_REGEX.matches(value)) { \"유효하지 않은 이메일 형식입니다.\" }" }
+        require (value.isNotBlank()) { "이메일 값은 필수입니다." }
         require(EMAIL_REGEX.matches(value)) { "유효하지 않은 이메일 형식입니다." }
     }
 
