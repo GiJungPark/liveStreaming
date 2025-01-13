@@ -15,6 +15,11 @@ class Nickname private constructor(val value: String) {
     // TODO: 닉네임 규칙 체크하는 로직 추후 보강
     private fun validate(value: String) {
         require(value.isNotBlank()) { "닉네임이 비어있습니다." }
+        require(isNotValidateLength()) { "닉네임 글자수는 30을 초과할 수 없습니다. "}
+    }
+
+    private fun isNotValidateLength(): Boolean {
+        return value.length > 30
     }
 
     override fun equals(other: Any?): Boolean {
