@@ -5,6 +5,7 @@ class Member private constructor(
     email: Email,
     password: Password,
     nickname: Nickname,
+    profile: Image,
 ) {
     private var _email: Email = email
     private val email: Email
@@ -18,13 +19,23 @@ class Member private constructor(
     val nickname: Nickname
         get() = _nickname
 
-    companion object {
-        fun of(email: Email, password: Password, nickname: Nickname): Member {
-            return Member(null, email, password, nickname)
-        }
+    private var _profile: Image = profile
+    val profile: Image
+        get() = _profile
 
-        fun of(id: MemberId, email: Email, password: Password, nickname: Nickname): Member {
-            return Member(id, email, password, nickname)
+    companion object {
+        fun of(id: MemberId, email: Email, password: Password, nickname: Nickname, profile: Image?): Member {
+            if (profile == null) {
+                return Member(
+                    id = id,
+                    email = email,
+                    password = password,
+                    nickname = nickname,
+                    profile = Image.profileImageOf("https://www.example.com/test.jpg")
+                )
+            }
+
+            return Member(id, email, password, nickname, profile)
         }
     }
 
