@@ -13,4 +13,8 @@ class UpdateMemberService : UpdateMemberUseCase {
         TODO("Not yet implemented")
     }
 
+    override fun updateProfile(command: UpdateMemberProfileCommand): MemberId {
+        TODO("Not yet implemented")
+    }
+
 }
