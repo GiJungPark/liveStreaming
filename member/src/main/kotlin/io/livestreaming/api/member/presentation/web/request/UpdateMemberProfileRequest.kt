@@ -1,8 +1,7 @@
 package io.livestreaming.api.member.presentation.web.request
 
-data class CreateMemberRequest(
-    val email: String,
-    val password: String,
+data class UpdateMemberProfileRequest(
+    val memberId: String,
     val nickname: String,
     val profileImageUrl: String?,
     val introduction: String?,
