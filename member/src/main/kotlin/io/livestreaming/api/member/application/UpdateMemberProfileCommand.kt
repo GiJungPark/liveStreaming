@@ -8,16 +8,16 @@ import io.livestreaming.api.member.domain.Nickname
 data class UpdateMemberProfileCommand(
     val id: MemberId,
     val nickname: Nickname,
-    val profile: Image?,
-    val introduction: Introduction?,
+    val profile: Image,
+    val introduction: Introduction,
 ) {
     companion object {
-        fun of(id: String, nickname: String, profile: String?, introduction: String?): UpdateMemberProfileCommand {
+        fun of(id: String, nickname: String, profile: String, introduction: String): UpdateMemberProfileCommand {
             return UpdateMemberProfileCommand(
                 id = MemberId.of(id),
                 nickname = Nickname.of(nickname),
-                profile = profile?.let { Image.profileImageOf(it) },
-                introduction = introduction?.let { Introduction.of(it) },
+                profile = Image.profileImageOf(profile),
+                introduction = Introduction.of(introduction),
             )
         }
     }
