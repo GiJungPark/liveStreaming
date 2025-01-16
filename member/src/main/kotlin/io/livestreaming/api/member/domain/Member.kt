@@ -2,17 +2,12 @@ package io.livestreaming.api.member.domain
 
 class Member private constructor(
     val id: MemberId? = null,
-    email: Email,
-    password: Password,
+    account: MemberAccount,
     profile: MemberProfile,
 ) {
-    private var _email: Email = email
-    private val email: Email
-        get() = _email
-
-    private var _password: Password = password
-    private val password: Password
-        get() = _password
+    private var _account: MemberAccount = account
+    private val account: MemberAccount
+        get() = _account
 
     private var _profile: MemberProfile = profile
     private val profile: MemberProfile
@@ -29,8 +24,10 @@ class Member private constructor(
         ): Member {
             return Member(
                 id = id,
-                email = email,
-                password = password,
+                account = MemberAccount.of(
+                    email = email,
+                    password = password,
+                ),
                 profile = MemberProfile.of(
                     nickname = nickname,
                     profileImage = profileImage,
@@ -41,13 +38,8 @@ class Member private constructor(
 
     }
 
-
-    fun changeEmail(email: Email) {
-        this._email = email
-    }
-
-    fun changePassword(password: Password) {
-        this._password = password
+    fun changeAccount(account: MemberAccount) {
+        this._account = account
     }
 
     fun changeProfile(profile: MemberProfile) {
