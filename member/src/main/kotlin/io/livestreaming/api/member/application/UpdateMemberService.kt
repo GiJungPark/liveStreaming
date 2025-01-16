@@ -26,7 +26,10 @@ class UpdateMemberService(
         )
 
         // member 업데이트
-        return updateMemberPort.updateProfile(memberProfile)
+        return updateMemberPort.updateProfile(
+            memberId = command.id,
+            memberProfile = memberProfile
+        )
     }
 
 }

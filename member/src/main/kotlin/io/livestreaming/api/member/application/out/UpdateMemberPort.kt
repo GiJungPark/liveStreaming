@@ -4,5 +4,5 @@ import io.livestreaming.api.member.domain.MemberId
 import io.livestreaming.api.member.domain.MemberProfile
 
 interface UpdateMemberPort {
-    fun updateProfile(memberProfile: MemberProfile): MemberId
+    fun updateProfile(memberId: MemberId, memberProfile: MemberProfile): MemberId
 }
