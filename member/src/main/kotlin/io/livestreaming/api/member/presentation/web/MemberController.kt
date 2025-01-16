@@ -21,6 +21,24 @@ class MemberController(
         createMemberUseCase.create(command)
     }
 
+    @GetMapping("/check-email")
+    fun checkEmail(
+        @RequestParam email: String,
+    ) {
+        val command = CheckEmailCommand.of(email)
+
+        readMemberUseCase.isAvailableEmail(command)
+    }
+
+    @GetMapping("/check-nickname")
+    fun checkNickname(
+        @RequestParam nickname: String,
+    ) {
+        val command = CheckNicknameCommand.of(nickname)
+
+        readMemberUseCase.isAvailableNickname(command)
+    }
+
     @PutMapping("/password")
     fun updatePassword(
         @RequestBody request: UpdateMemberPasswordRequest,
