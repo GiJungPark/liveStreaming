@@ -14,11 +14,11 @@ class Nickname private constructor(val value: String) {
 
     private fun validate(value: String) {
         require(value.isNotBlank()) { "닉네임이 비어있습니다." }
-        require(isNotValidateLength()) { "닉네임 글자수는 30을 초과할 수 없습니다. "}
+        require(isValidateLength()) { "닉네임 글자수는 30을 초과할 수 없습니다. "}
     }
 
-    private fun isNotValidateLength(): Boolean {
-        return value.length > 30
+    private fun isValidateLength(): Boolean {
+        return value.length < 30
     }
 
     override fun equals(other: Any?): Boolean {

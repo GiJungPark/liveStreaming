@@ -1,5 +1,7 @@
 package io.livestreaming.api.member.application
 
+import io.livestreaming.api.common.domain.Image
+import io.livestreaming.api.common.domain.MemberId
 import io.livestreaming.api.member.domain.*
 import io.livestreaming.api.member.util.id.IdGenerator
 import org.springframework.stereotype.Service
@@ -15,7 +17,9 @@ class CreateMemberService(
             id = memberId,
             email = command.email,
             password = command.password,
-            nickname = command.nickname
+            nickname = command.nickname,
+            profileImage = Image.profileImageOf("https://www.example.com/image.jpg"),
+            introduction = Introduction.of("자기소개")
         )
 
         // Member 저장

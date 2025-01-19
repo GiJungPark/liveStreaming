@@ -1,5 +1,8 @@
 package io.livestreaming.api.member.domain
 
+import io.livestreaming.api.common.domain.Image
+import io.livestreaming.api.common.domain.MemberId
+
 class Member private constructor(
     val id: MemberId? = null,
     account: MemberAccount,

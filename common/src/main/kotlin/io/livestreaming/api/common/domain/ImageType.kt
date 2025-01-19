@@ -1,4 +1,4 @@
-package io.livestreaming.api.member.domain
+package io.livestreaming.api.common.domain
 
 enum class ImageType {
     Profile {

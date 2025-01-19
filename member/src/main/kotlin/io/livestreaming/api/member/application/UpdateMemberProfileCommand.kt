@@ -1,8 +1,8 @@
 package io.livestreaming.api.member.application
 
-import io.livestreaming.api.member.domain.Image
+import io.livestreaming.api.common.domain.Image
+import io.livestreaming.api.common.domain.MemberId
 import io.livestreaming.api.member.domain.Introduction
-import io.livestreaming.api.member.domain.MemberId
 import io.livestreaming.api.member.domain.Nickname
 
 data class UpdateMemberProfileCommand(

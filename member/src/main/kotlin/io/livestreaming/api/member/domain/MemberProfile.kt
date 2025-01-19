@@ -1,5 +1,7 @@
 package io.livestreaming.api.member.domain
 
+import io.livestreaming.api.common.domain.Image
+
 class MemberProfile private constructor(
     nickname: Nickname,
     profileImage: Image,

@@ -1,8 +1,8 @@
 package io.livestreaming.api.member.application
 
+import io.livestreaming.api.common.domain.MemberId
 import io.livestreaming.api.member.application.out.GetMemberPort
 import io.livestreaming.api.member.application.out.UpdateMemberPort
-import io.livestreaming.api.member.domain.MemberId
 import org.springframework.stereotype.Service
 
 @Service
