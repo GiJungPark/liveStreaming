@@ -3,6 +3,7 @@ rootProject.name = "liveStreaming"
 include(
     "chatting",
     "member",
+    "commerce",
     "common",
 )
 
