@@ -1,8 +1,8 @@
 package io.livestreaming.api.commerce.infrastructure.entity
 
+import io.livestreaming.api.commerce.domain.CoinPurchaseHistory
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Table(name = "purchase_coin_history")
@@ -24,4 +24,13 @@ class PurchaseCoinEntity(
     var remainingCoin: Long,
 ) {
     protected constructor() : this(null, "", LocalDateTime.now(), 0L, 0L)
+
+    fun toCoinPurchaseHistory(): CoinPurchaseHistory {
+        return CoinPurchaseHistory.of(
+            memberId = memberId,
+            purchaseAt = purchaseAt,
+            purchaseCoin = purchaseCoin,
+            remainingCoin = remainingCoin
+        )
+    }
 }
