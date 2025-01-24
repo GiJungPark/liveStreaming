@@ -4,15 +4,23 @@ class ProductCode private constructor(
     val code: String,
     val description: String,
 ) {
-    init {
-        isCodeValid(code)
-        isDescriptionValid(description)
-    }
-
     companion object {
+        private const val CODE_EMPTY_CHECK_MESSAGE = "코드가 비어있습니다."
+        private const val CODE_EXCEED_MAX_LENGTH_MESSAGE = "코드의 최대 길이는 10글자 입니다."
+        private const val CODE_START_ENGLISH_END_NUMBER_MESSAGE = "코드는 영어로 시작하고, 숫자로 끝나야 합니다."
+        private const val DESCRIPTION_EMPTY_CHECK_MESSAGE = "코드 설명이 비어있습니다."
+        private const val DESCRIPTION_EXCEED_MAX_LENGTH_MESSAGE = "코드 설명의 최대 길이는 60글자 입니다."
+
+        private val START_ENGLISH_END_NUMBER_REGEX = Regex("[A-Z]+\\d+")
+
         fun of(code: String, description: String): ProductCode {
             return ProductCode(code, description)
         }
+    }
+
+    init {
+        isCodeValid(code)
+        isDescriptionValid(description)
     }
 
     private fun isCodeValid(code: String) {
@@ -27,23 +35,23 @@ class ProductCode private constructor(
     }
 
     private fun isCodeNotBlank(code: String) {
-        require(code.isNotBlank()) { "코드가 비어있습니다." }
+        require(code.isNotBlank()) { CODE_EMPTY_CHECK_MESSAGE }
     }
 
     private fun isCodeLengthValid(code: String) {
-        require(code.length <= 10) { "코드의 최대 길이는 10글자 입니다." }
+        require(code.length <= 10) { CODE_EXCEED_MAX_LENGTH_MESSAGE }
     }
 
     private fun isCodeFormatValid(code: String) {
-        require(code.matches(Regex("[A-Z]+\\d+"))) { "코드는 영어로 시작하고, 숫자로 끝나야 합니다." }
+        require(START_ENGLISH_END_NUMBER_REGEX.matches(code)) { CODE_START_ENGLISH_END_NUMBER_MESSAGE }
     }
 
     private fun isDescriptionNotBlank(description: String) {
-        require(description.isNotBlank()) { "코드 설명이 비어있습니다." }
+        require(description.isNotBlank()) { DESCRIPTION_EMPTY_CHECK_MESSAGE }
     }
 
     private fun isDescriptionLengthValid(description: String) {
-        require(description.length <= 60) { "코드 설명의 최대 길이는 60글자 입니다." }
+        require(description.length <= 60) { DESCRIPTION_EXCEED_MAX_LENGTH_MESSAGE }
     }
 
     override fun equals(other: Any?): Boolean {
