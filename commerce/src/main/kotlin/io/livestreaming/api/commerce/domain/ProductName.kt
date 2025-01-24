@@ -16,21 +16,25 @@ class ProductName private constructor(val value: String) {
     }
 
     init {
-        require(isNotEmpty(value)) { EMPTY_CHECK_MESSAGE }
-        require(isWithinMaxLength(value)) { EXCEED_MAX_LENGTH_MESSAGE }
-        require(containsKoreanOrEnglish(value)) { NOT_CONTAINS_KOREAN_OR_ENGLISH_MESSAGE }
+        isNameValid(value)
     }
 
-    private fun isNotEmpty(value: String): Boolean {
-        return value.isNotBlank()
+    private fun isNameValid(name: String) {
+        isNotEmpty(name)
+        isWithinMaxLength(name)
+        isNameValid(name)
     }
 
-    private fun isWithinMaxLength(value: String): Boolean {
-        return value.length <= PRODUCT_NAME_MAX_LENGTH
+    private fun isNotEmpty(value: String) {
+        require(value.isNotBlank()) { EMPTY_CHECK_MESSAGE }
     }
 
-    private fun containsKoreanOrEnglish(value: String): Boolean {
-        return KOREAN_OR_ENGLISH_REGEX.matches(value)
+    private fun isWithinMaxLength(value: String) {
+        require(value.length <= PRODUCT_NAME_MAX_LENGTH) { EXCEED_MAX_LENGTH_MESSAGE }
+    }
+
+    private fun containsKoreanOrEnglish(value: String) {
+        require(KOREAN_OR_ENGLISH_REGEX.matches(value)) { NOT_CONTAINS_KOREAN_OR_ENGLISH_MESSAGE }
     }
 
     override fun equals(other: Any?): Boolean {
