@@ -22,7 +22,7 @@ class ProductName private constructor(val value: String) {
     private fun isNameValid(name: String) {
         isNotEmpty(name)
         isWithinMaxLength(name)
-        isNameValid(name)
+        containsKoreanOrEnglish(name)
     }
 
     private fun isNotEmpty(value: String) {
