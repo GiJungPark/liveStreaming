@@ -5,6 +5,8 @@ class ProductCode private constructor(
     val description: String,
 ) {
     companion object {
+        private const val PRODUCT_CODE_MAX_LENGTH = 10
+        private const val PRODUCT_CODE_DESCRIPTION_MAX_LENGTH = 60
         private const val CODE_EMPTY_CHECK_MESSAGE = "코드가 비어있습니다."
         private const val CODE_EXCEED_MAX_LENGTH_MESSAGE = "코드의 최대 길이는 10글자 입니다."
         private const val CODE_START_ENGLISH_END_NUMBER_MESSAGE = "코드는 영어로 시작하고, 숫자로 끝나야 합니다."
@@ -39,7 +41,7 @@ class ProductCode private constructor(
     }
 
     private fun isCodeLengthValid(code: String) {
-        require(code.length <= 10) { CODE_EXCEED_MAX_LENGTH_MESSAGE }
+        require(code.length <= PRODUCT_CODE_MAX_LENGTH) { CODE_EXCEED_MAX_LENGTH_MESSAGE }
     }
 
     private fun isCodeFormatValid(code: String) {
@@ -51,7 +53,7 @@ class ProductCode private constructor(
     }
 
     private fun isDescriptionLengthValid(description: String) {
-        require(description.length <= 60) { DESCRIPTION_EXCEED_MAX_LENGTH_MESSAGE }
+        require(description.length <= PRODUCT_CODE_DESCRIPTION_MAX_LENGTH) { DESCRIPTION_EXCEED_MAX_LENGTH_MESSAGE }
     }
 
     override fun equals(other: Any?): Boolean {
