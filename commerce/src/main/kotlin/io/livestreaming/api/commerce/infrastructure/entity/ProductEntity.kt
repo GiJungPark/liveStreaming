@@ -1,26 +1,38 @@
 package io.livestreaming.api.commerce.infrastructure.entity
 
+import io.livestreaming.api.commerce.domain.Product
 import jakarta.persistence.*
 import java.math.BigInteger
 import java.time.LocalDateTime
 
-@Table(name = "product")
 @Entity
+@Table(name = "product")
 class ProductEntity private constructor(
     name: String,
     price: BigInteger,
 ){
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null
+    @Column(name = "id", nullable = false)
+    val id: Long? = null
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_code_id", referencedColumnName = "id")
+    val code: ProductCodeEntity = ProductCodeEntity()
 
     @Column(name = "name", nullable = false)
-    var name: String = name
+    val name: String = name
 
     @Column(name = "price", nullable = false)
-    var price: BigInteger = price
+    val price: BigInteger = price
 
     @Column(name = "created_at", nullable = false)
-    var createdAt: LocalDateTime = LocalDateTime.now()
+    val createdAt: LocalDateTime = LocalDateTime.now()
+
+    companion object {
+        fun withoutId(product: Product): ProductEntity {
+            return ProductEntity(name = product.name,  price = product.price)
+        }
+    }
 
     constructor() : this("", BigInteger.ZERO)
 }
