@@ -1,5 +1,7 @@
 package io.livestreaming.api.commerce.application.service
 
+import io.livestreaming.api.commerce.application.port.`in`.DonationCoinCommand
+import io.livestreaming.api.commerce.application.port.`in`.DonationCoinUseCase
 import io.livestreaming.api.commerce.application.port.`in`.PurchaseCoinCommand
 import io.livestreaming.api.commerce.application.port.`in`.PurchaseCoinUseCase
 import io.livestreaming.api.commerce.application.port.out.PurchaseCoinPort
@@ -12,11 +14,15 @@ import java.math.RoundingMode
 @Service
 class CoinService(
     private val purchaseCoinPort: PurchaseCoinPort
-) : PurchaseCoinUseCase {
+) : PurchaseCoinUseCase, DonationCoinUseCase {
     override fun purchase(command: PurchaseCoinCommand) {
         val price = Money.of(calculateCoinPrice(command.quantity))
 
         purchaseCoinPort.purchase(command.memberId, command.quantity, price)
+    }
+
+    override fun donation(command: DonationCoinCommand) {
+        TODO("Not yet implemented")
     }
 
     private fun calculateCoinPrice(amount: BigInteger): BigInteger {

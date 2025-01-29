@@ -36,6 +36,10 @@ subprojects {
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
         testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+        testImplementation("io.kotest:kotest-runner-junit5:5.9.0")
+        testImplementation("io.kotest:kotest-assertions-core-jvm:5.9.0")
+        testImplementation("io.mockk:mockk:1.12.4")
+        testImplementation("com.ninja-squad:springmockk:4.0.2")
     }
 
     tasks.getByName("bootJar") {
@@ -52,7 +56,7 @@ subprojects {
         }
     }
 
-    tasks.withType<Test> {
+    tasks.withType<Test>().configureEach {
         useJUnitPlatform()
     }
 
