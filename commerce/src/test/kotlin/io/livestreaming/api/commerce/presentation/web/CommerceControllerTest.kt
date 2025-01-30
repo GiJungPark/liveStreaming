@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 
 @WebMvcTest(CommerceController::class)
@@ -54,4 +55,14 @@ class CommerceControllerTest {
         response.andExpect { status { isOk() } }
     }
 
+    @Test
+    fun `코인 구매 내역 API`() {
+        val url = "/commerce/coin/purchase/history?memberId=validMemberId&page=1&size=10&searchYear=2025"
+
+        val response = mockMvc.get(url){
+            contentType = MediaType.APPLICATION_JSON
+        }
+
+        response.andExpect { status { isOk() } }
+    }
 }

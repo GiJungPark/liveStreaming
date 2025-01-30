@@ -1,9 +1,6 @@
 package io.livestreaming.api.commerce.application.service
 
-import io.livestreaming.api.commerce.application.port.`in`.DonationCoinCommand
-import io.livestreaming.api.commerce.application.port.`in`.DonationCoinUseCase
-import io.livestreaming.api.commerce.application.port.`in`.PurchaseCoinCommand
-import io.livestreaming.api.commerce.application.port.`in`.PurchaseCoinUseCase
+import io.livestreaming.api.commerce.application.port.`in`.*
 import io.livestreaming.api.commerce.application.port.out.DonationCoinPort
 import io.livestreaming.api.commerce.application.port.out.PurchaseCoinPort
 import io.livestreaming.api.commerce.domain.Money
@@ -21,6 +18,10 @@ class CoinService(
         val price = Money.of(calculateCoinPrice(command.quantity))
 
         purchaseCoinPort.purchase(command.memberId, command.quantity, price)
+    }
+
+    override fun readHistory(command: PurchaseCoinHistoryCommand): List<String> {
+        TODO("Not yet implemented")
     }
 
     override fun donation(command: DonationCoinCommand) {
