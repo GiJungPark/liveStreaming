@@ -4,6 +4,7 @@ import io.livestreaming.api.commerce.application.port.`in`.DonationCoinCommand
 import io.livestreaming.api.commerce.application.port.`in`.DonationCoinUseCase
 import io.livestreaming.api.commerce.application.port.`in`.PurchaseCoinCommand
 import io.livestreaming.api.commerce.application.port.`in`.PurchaseCoinUseCase
+import io.livestreaming.api.commerce.application.port.out.DonationCoinPort
 import io.livestreaming.api.commerce.application.port.out.PurchaseCoinPort
 import io.livestreaming.api.commerce.domain.Money
 import org.springframework.stereotype.Service
@@ -13,7 +14,8 @@ import java.math.RoundingMode
 
 @Service
 class CoinService(
-    private val purchaseCoinPort: PurchaseCoinPort
+    private val purchaseCoinPort: PurchaseCoinPort,
+    private val donationCoinPort: DonationCoinPort
 ) : PurchaseCoinUseCase, DonationCoinUseCase {
     override fun purchase(command: PurchaseCoinCommand) {
         val price = Money.of(calculateCoinPrice(command.quantity))
@@ -22,7 +24,11 @@ class CoinService(
     }
 
     override fun donation(command: DonationCoinCommand) {
-        TODO("Not yet implemented")
+        donationCoinPort.donation(
+            memberId = command.memberId,
+            channelId = command.channelId,
+            quantity = command.quantity
+        )
     }
 
     private fun calculateCoinPrice(amount: BigInteger): BigInteger {
