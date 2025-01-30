@@ -5,12 +5,14 @@ import io.livestreaming.api.commerce.application.port.out.PurchaseCoinPort
 import io.livestreaming.api.commerce.application.port.out.ReadCoinPort
 import io.livestreaming.api.commerce.domain.ChannelId
 import io.livestreaming.api.commerce.domain.Money
+import io.livestreaming.api.commerce.domain.PurchaseCoinHistory
 import io.livestreaming.api.commerce.infrastructure.entity.DonationCoinHistoryEntity
 import io.livestreaming.api.commerce.infrastructure.entity.PurchaseCoinHistoryEntity
 import io.livestreaming.api.common.domain.MemberId
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Repository
 import java.math.BigInteger
+import java.time.Year
 import kotlin.jvm.optionals.getOrNull
 
 @Repository
@@ -35,6 +37,10 @@ class CoinRepository(
 
         coinBalanceEntity.add(quantity)
         coinJpaRepository.save(coinBalanceEntity)
+    }
+
+    override fun getHistory(memberId: MemberId, size: Int, page: Int, searchYear: Year): List<PurchaseCoinHistory> {
+        TODO("Not yet implemented")
     }
 
     @Transactional

@@ -3,6 +3,7 @@ package io.livestreaming.api.commerce.application.service
 import io.livestreaming.api.commerce.application.port.`in`.*
 import io.livestreaming.api.commerce.application.port.out.DonationCoinPort
 import io.livestreaming.api.commerce.application.port.out.PurchaseCoinPort
+import io.livestreaming.api.commerce.domain.PurchaseCoinHistory
 import io.livestreaming.api.commerce.domain.Money
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
@@ -20,8 +21,15 @@ class CoinService(
         purchaseCoinPort.purchase(command.memberId, command.quantity, price)
     }
 
-    override fun readHistory(command: PurchaseCoinHistoryCommand): List<String> {
-        TODO("Not yet implemented")
+    override fun readHistory(command: PurchaseCoinHistoryCommand): List<PurchaseCoinHistory> {
+        val histories = purchaseCoinPort.getHistory(
+            memberId = command.memberId,
+            size = command.size,
+            page = command.page,
+            searchYear = command.searchYear
+        )
+
+        return histories
     }
 
     override fun donation(command: DonationCoinCommand) {
