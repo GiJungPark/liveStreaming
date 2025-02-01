@@ -1,10 +1,11 @@
 package io.livestreaming.api.commerce.presentation.web
 
 import io.livestreaming.api.commerce.application.port.`in`.*
+import io.livestreaming.api.commerce.domain.PurchaseCoinHistory
 import io.livestreaming.api.commerce.presentation.web.request.DonationCoinRequest
 import io.livestreaming.api.commerce.presentation.web.request.PurchaseCoinRequest
+import org.springframework.data.domain.Page
 import org.springframework.web.bind.annotation.*
-import java.time.Year
 
 @RestController
 class CommerceController(
@@ -27,7 +28,7 @@ class CommerceController(
         @RequestParam("page") page: Int,
         @RequestParam("size") size: Int,
         @RequestParam("searchYear") searchYear: String,
-    ) {
+    ): Page<PurchaseCoinHistory> {
         val command = PurchaseCoinHistoryCommand.of(
             memberId = memberId,
             page = page,
@@ -35,7 +36,7 @@ class CommerceController(
             searchYear = searchYear,
         )
 
-        purchaseCoinUseCase.readHistory(command)
+        return purchaseCoinUseCase.readHistory(command)
     }
 
     @PostMapping("/commerce/coin/donation")

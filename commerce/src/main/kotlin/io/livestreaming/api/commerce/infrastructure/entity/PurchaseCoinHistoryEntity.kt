@@ -1,6 +1,7 @@
 package io.livestreaming.api.commerce.infrastructure.entity
 
 import io.livestreaming.api.commerce.domain.Money
+import io.livestreaming.api.commerce.domain.PurchaseCoinHistory
 import io.livestreaming.api.common.domain.MemberId
 import jakarta.persistence.*
 import java.math.BigInteger
@@ -44,5 +45,14 @@ class PurchaseCoinHistoryEntity private constructor(
             )
         }
 
+    }
+
+    fun toDomain(): PurchaseCoinHistory {
+        return PurchaseCoinHistory.of(
+            purchaseDate = purchaseAt,
+            quantity = quantity,
+            remaining = remaining,
+            price = price,
+        )
     }
 }
