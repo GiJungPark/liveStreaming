@@ -65,4 +65,15 @@ class CommerceControllerTest {
 
         response.andExpect { status { isOk() } }
     }
+
+    @Test
+    fun `도네이션 내역 API`() {
+        val url = "/commerce/coin/donation/history?memberId=validMemberId&page=1&size=10&searchYear=2025"
+
+        val response = mockMvc.get(url){
+            contentType = MediaType.APPLICATION_JSON
+        }
+
+        response.andExpect { status { isOk() } }
+    }
 }

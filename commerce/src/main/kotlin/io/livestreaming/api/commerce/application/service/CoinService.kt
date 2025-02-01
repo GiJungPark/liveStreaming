@@ -3,6 +3,7 @@ package io.livestreaming.api.commerce.application.service
 import io.livestreaming.api.commerce.application.port.`in`.*
 import io.livestreaming.api.commerce.application.port.out.DonationCoinPort
 import io.livestreaming.api.commerce.application.port.out.PurchaseCoinPort
+import io.livestreaming.api.commerce.domain.DonationCoinHistory
 import io.livestreaming.api.commerce.domain.PurchaseCoinHistory
 import io.livestreaming.api.commerce.domain.Money
 import org.springframework.data.domain.Page
@@ -36,6 +37,15 @@ class CoinService(
             memberId = command.memberId,
             channelId = command.channelId,
             quantity = command.quantity
+        )
+    }
+
+    override fun readHistory(command: DonationCoinHistoryCommand): Page<DonationCoinHistory> {
+        return donationCoinPort.getDonationHistory(
+            memberId = command.memberId,
+            size = command.size - 1,
+            page = command.page,
+            searchYear = command.searchYear
         )
     }
 

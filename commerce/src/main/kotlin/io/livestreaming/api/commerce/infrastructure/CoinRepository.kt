@@ -2,8 +2,8 @@ package io.livestreaming.api.commerce.infrastructure
 
 import io.livestreaming.api.commerce.application.port.out.DonationCoinPort
 import io.livestreaming.api.commerce.application.port.out.PurchaseCoinPort
-import io.livestreaming.api.commerce.application.port.out.ReadCoinPort
 import io.livestreaming.api.commerce.domain.ChannelId
+import io.livestreaming.api.commerce.domain.DonationCoinHistory
 import io.livestreaming.api.commerce.domain.Money
 import io.livestreaming.api.commerce.domain.PurchaseCoinHistory
 import io.livestreaming.api.commerce.infrastructure.entity.DonationCoinHistoryEntity
@@ -24,7 +24,7 @@ class CoinRepository(
     private val channelCoinJpaRepository: ChannelCoinBalanceJpaRepository,
     private val purchaseCoinHistoryRepository: PurchaseCoinHistoryJpaRepository,
     private val donationCoinHistoryRepository: DonationCoinHistoryJpaRepository,
-) : PurchaseCoinPort, DonationCoinPort, ReadCoinPort {
+) : PurchaseCoinPort, DonationCoinPort {
 
     @Transactional
     override fun purchase(memberId: MemberId, quantity: BigInteger, price: Money) {
@@ -42,7 +42,12 @@ class CoinRepository(
         coinJpaRepository.save(coinBalanceEntity)
     }
 
-    override fun getPurchaseHistory(memberId: MemberId, size: Int, page: Int, searchYear: Year): Page<PurchaseCoinHistory> {
+    override fun getPurchaseHistory(
+        memberId: MemberId,
+        size: Int,
+        page: Int,
+        searchYear: Year
+    ): Page<PurchaseCoinHistory> {
         val startDate = LocalDateTime.of(searchYear.value, 1, 1, 0, 0)
         val endDate = LocalDateTime.of(searchYear.value + 1, 1, 1, 0, 0)
         val pageable = PageRequest.of(page, size)
@@ -76,9 +81,21 @@ class CoinRepository(
 
     }
 
-    override fun getRemainingByMemberId(memberId: MemberId): BigInteger {
-        val coinBalanceEntity = coinJpaRepository.findById(memberId.value)
+    override fun getDonationHistory(
+        memberId: MemberId,
+        page: Int,
+        size: Int,
+        searchYear: Year
+    ): Page<DonationCoinHistory> {
+        val startDate = LocalDateTime.of(searchYear.value, 1, 1, 0, 0)
+        val endDate = LocalDateTime.of(searchYear.value + 1, 1, 1, 0, 0)
+        val pageable = PageRequest.of(page, size)
 
-        return coinBalanceEntity.getOrNull()?.amount ?: BigInteger.ZERO
+        return donationCoinHistoryRepository.findByMemberIdAndDonationAtBetween(
+            memberId = memberId.value,
+            start = startDate,
+            end = endDate.minusNanos(1),
+            pageable = pageable
+        ).map { it.toDomain() }
     }
 }

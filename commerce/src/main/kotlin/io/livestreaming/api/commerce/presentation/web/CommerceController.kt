@@ -1,6 +1,7 @@
 package io.livestreaming.api.commerce.presentation.web
 
 import io.livestreaming.api.commerce.application.port.`in`.*
+import io.livestreaming.api.commerce.domain.DonationCoinHistory
 import io.livestreaming.api.commerce.domain.PurchaseCoinHistory
 import io.livestreaming.api.commerce.presentation.web.request.DonationCoinRequest
 import io.livestreaming.api.commerce.presentation.web.request.PurchaseCoinRequest
@@ -50,5 +51,21 @@ class CommerceController(
         donationCoinUseCase.donation(command)
     }
 
+    @GetMapping("/commerce/coin/donation/history")
+    fun getDonationCoinHistory(
+        @RequestParam("memberId") memberId: String,
+        @RequestParam("page") page: Int,
+        @RequestParam("size") size: Int,
+        @RequestParam("searchYear") searchYear: String,
+    ): Page<DonationCoinHistory> {
+        val command = DonationCoinHistoryCommand.of(
+            memberId = memberId,
+            page = page,
+            size = size,
+            searchYear = searchYear,
+        )
+
+        return donationCoinUseCase.readHistory(command)
+    }
 
 }
