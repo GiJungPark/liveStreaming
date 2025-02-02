@@ -23,5 +23,18 @@ data class PaginationResponse<T>(
                 totalElements = page.totalElements.toInt()
             )
         }
+
+        fun ofMemberDonationHistory(page: Page<DonationCoinHistory>): PaginationResponse<MemberDonationHistoryResponse> {
+
+            val data = page.content.map { MemberDonationHistoryResponse.of(it) }
+
+            return PaginationResponse(
+                data = data,
+                page = page.number + 1,
+                size = page.size,
+                totalPages = page.totalPages,
+                totalElements = page.totalElements.toInt()
+            )
+        }
     }
 }

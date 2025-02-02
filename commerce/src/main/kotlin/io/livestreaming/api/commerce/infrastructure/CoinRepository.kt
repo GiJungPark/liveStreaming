@@ -16,7 +16,6 @@ import org.springframework.stereotype.Repository
 import java.math.BigInteger
 import java.time.LocalDateTime
 import java.time.Year
-import kotlin.jvm.optionals.getOrNull
 
 @Repository
 class CoinRepository(
@@ -84,17 +83,12 @@ class CoinRepository(
     override fun getDonationHistoryByMemberId(
         memberId: MemberId,
         page: Int,
-        size: Int,
-        searchYear: Year
+        size: Int
     ): Page<DonationCoinHistory> {
-        val startDate = LocalDateTime.of(searchYear.value, 1, 1, 0, 0)
-        val endDate = LocalDateTime.of(searchYear.value + 1, 1, 1, 0, 0)
         val pageable = PageRequest.of(page, size)
 
-        return donationCoinHistoryRepository.findByMemberIdAndDonationAtBetween(
+        return donationCoinHistoryRepository.findByMemberId(
             memberId = memberId.value,
-            start = startDate,
-            end = endDate.minusNanos(1),
             pageable = pageable
         ).map { it.toDomain() }
     }

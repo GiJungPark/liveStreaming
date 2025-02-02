@@ -45,7 +45,6 @@ class CoinService(
             memberId = command.memberId,
             page = command.page - 1,
             size = command.size,
-            searchYear = command.searchYear
         )
     }
 
