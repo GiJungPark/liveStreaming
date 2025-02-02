@@ -2,10 +2,7 @@ package io.livestreaming.api.commerce.infrastructure
 
 import io.livestreaming.api.commerce.application.port.out.DonationCoinPort
 import io.livestreaming.api.commerce.application.port.out.PurchaseCoinPort
-import io.livestreaming.api.commerce.domain.ChannelId
-import io.livestreaming.api.commerce.domain.DonationCoinHistory
-import io.livestreaming.api.commerce.domain.Money
-import io.livestreaming.api.commerce.domain.PurchaseCoinHistory
+import io.livestreaming.api.commerce.domain.*
 import io.livestreaming.api.commerce.infrastructure.entity.DonationCoinHistoryEntity
 import io.livestreaming.api.commerce.infrastructure.entity.PurchaseCoinHistoryEntity
 import io.livestreaming.api.common.domain.MemberId
@@ -50,6 +47,15 @@ class CoinRepository(
             memberId = memberId.value,
             pageable = pageable
         ).map { it.toDomain() }
+    }
+
+    override fun getMemberRemainingCoin(memberId: MemberId): CoinBalance {
+        val memberCoinBalanceEntity = coinJpaRepository.findById(memberId.value)
+        if(memberCoinBalanceEntity.isPresent) {
+            return CoinBalance.of(memberCoinBalanceEntity.get().amount)
+        }
+
+        return CoinBalance.ZERO()
     }
 
     @Transactional

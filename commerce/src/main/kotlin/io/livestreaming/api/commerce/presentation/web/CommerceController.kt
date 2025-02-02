@@ -3,10 +3,7 @@ package io.livestreaming.api.commerce.presentation.web
 import io.livestreaming.api.commerce.application.port.`in`.*
 import io.livestreaming.api.commerce.presentation.web.request.DonationCoinRequest
 import io.livestreaming.api.commerce.presentation.web.request.PurchaseCoinRequest
-import io.livestreaming.api.commerce.presentation.web.response.ChannelDonationHistoryResponse
-import io.livestreaming.api.commerce.presentation.web.response.MemberDonationHistoryResponse
-import io.livestreaming.api.commerce.presentation.web.response.PaginationResponse
-import io.livestreaming.api.commerce.presentation.web.response.PurchaseCoinHistoryResponse
+import io.livestreaming.api.commerce.presentation.web.response.*
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -38,6 +35,16 @@ class CommerceController(
         val result = purchaseCoinUseCase.readHistory(command)
 
         return PaginationResponse.ofPurchaseCoinHistory(result)
+    }
+
+    @GetMapping("/coin/members/{memberId}/remaining")
+    fun getCoinRemaining(@PathVariable("memberId") memberId: String): MemberRemainingCoinResponse {
+        val command = MemberRemainingCoinCommand.of(
+            memberId = memberId
+        )
+        val result = purchaseCoinUseCase.getMemberRemainingCoin(command)
+
+        return MemberRemainingCoinResponse.of(result)
     }
 
     @PostMapping("/coin/members/{memberId}/donations")

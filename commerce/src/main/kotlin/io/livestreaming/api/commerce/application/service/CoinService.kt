@@ -3,6 +3,7 @@ package io.livestreaming.api.commerce.application.service
 import io.livestreaming.api.commerce.application.port.`in`.*
 import io.livestreaming.api.commerce.application.port.out.DonationCoinPort
 import io.livestreaming.api.commerce.application.port.out.PurchaseCoinPort
+import io.livestreaming.api.commerce.domain.CoinBalance
 import io.livestreaming.api.commerce.domain.DonationCoinHistory
 import io.livestreaming.api.commerce.domain.PurchaseCoinHistory
 import io.livestreaming.api.commerce.domain.Money
@@ -29,6 +30,10 @@ class CoinService(
             page = command.page - 1,
             size = command.size
         )
+    }
+
+    override fun getMemberRemainingCoin(command: MemberRemainingCoinCommand): CoinBalance {
+        return purchaseCoinPort.getMemberRemainingCoin(command.memberId)
     }
 
     override fun donation(command: DonationCoinCommand) {
