@@ -1,11 +1,11 @@
 package io.livestreaming.api.commerce.presentation.web
 
 import io.livestreaming.api.commerce.application.port.`in`.*
-import io.livestreaming.api.commerce.domain.DonationCoinHistory
 import io.livestreaming.api.commerce.domain.PurchaseCoinHistory
 import io.livestreaming.api.commerce.presentation.web.request.DonationCoinRequest
 import io.livestreaming.api.commerce.presentation.web.request.PurchaseCoinRequest
 import io.livestreaming.api.commerce.presentation.web.response.ChannelDonationHistoryResponse
+import io.livestreaming.api.commerce.presentation.web.response.MemberDonationHistoryResponse
 import io.livestreaming.api.commerce.presentation.web.response.PaginationResponse
 import org.springframework.data.domain.Page
 import org.springframework.web.bind.annotation.*
@@ -53,25 +53,24 @@ class CommerceController(
         donationCoinUseCase.donation(command)
     }
 
-    @GetMapping("/commerce/coin/donation/history")
-    fun getDonationCoinHistory(
-        @RequestParam("memberId") memberId: String,
+    @GetMapping("/coin/members/{memberId}/donations")
+    fun getDonationCoinHistoryByMember(
+        @PathVariable("memberId") memberId: String,
         @RequestParam("page") page: Int,
         @RequestParam("size") size: Int,
-        @RequestParam("searchYear") searchYear: String,
-    ): Page<DonationCoinHistory> {
+    ): PaginationResponse<MemberDonationHistoryResponse> {
         val command = MemberDonationHistoryCommand.of(
             memberId = memberId,
             page = page,
             size = size,
-            searchYear = searchYear,
         )
+        val result = donationCoinUseCase.getDonationHistoryByMemberId(command)
 
-        return donationCoinUseCase.getDonationHistoryByMemberId(command)
+        return PaginationResponse.ofMemberDonationHistory(result)
     }
 
-    @GetMapping("/commerce/channels/{channelId}/donations")
-    fun getDonationCoinHistory(
+    @GetMapping("/coin/channels/{channelId}/donations")
+    fun getDonationCoinHistoryByChannel(
         @PathVariable("channelId") channelId: String,
         @RequestParam("page") page: Int,
         @RequestParam("size") size: Int,
