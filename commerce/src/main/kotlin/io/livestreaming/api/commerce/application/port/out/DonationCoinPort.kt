@@ -9,5 +9,6 @@ import java.time.Year
 
 interface DonationCoinPort {
     fun donation(memberId: MemberId, channelId: ChannelId, quantity: BigInteger)
-    fun getDonationHistory(memberId: MemberId, page: Int, size: Int, searchYear: Year): Page<DonationCoinHistory>
+    fun getDonationHistoryByMemberId(memberId: MemberId, page: Int, size: Int, searchYear: Year): Page<DonationCoinHistory>
+    fun getDonationHistoryByChannelId(channelId: ChannelId, page: Int, size: Int): Page<DonationCoinHistory>
 }

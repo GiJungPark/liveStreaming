@@ -5,6 +5,8 @@ import io.livestreaming.api.commerce.domain.DonationCoinHistory
 import io.livestreaming.api.commerce.domain.PurchaseCoinHistory
 import io.livestreaming.api.commerce.presentation.web.request.DonationCoinRequest
 import io.livestreaming.api.commerce.presentation.web.request.PurchaseCoinRequest
+import io.livestreaming.api.commerce.presentation.web.response.ChannelDonationHistoryResponse
+import io.livestreaming.api.commerce.presentation.web.response.PaginationResponse
 import org.springframework.data.domain.Page
 import org.springframework.web.bind.annotation.*
 
@@ -58,14 +60,29 @@ class CommerceController(
         @RequestParam("size") size: Int,
         @RequestParam("searchYear") searchYear: String,
     ): Page<DonationCoinHistory> {
-        val command = DonationCoinHistoryCommand.of(
+        val command = MemberDonationHistoryCommand.of(
             memberId = memberId,
             page = page,
             size = size,
             searchYear = searchYear,
         )
 
-        return donationCoinUseCase.readHistory(command)
+        return donationCoinUseCase.getDonationHistoryByMemberId(command)
     }
 
+    @GetMapping("/commerce/channels/{channelId}/donations")
+    fun getDonationCoinHistory(
+        @PathVariable("channelId") channelId: String,
+        @RequestParam("page") page: Int,
+        @RequestParam("size") size: Int,
+    ): PaginationResponse<ChannelDonationHistoryResponse> {
+        val command = ChannelDonationHistoryCommand.of(
+            channelId = channelId,
+            page = page,
+            size = size
+        )
+        val result = donationCoinUseCase.getDonationHistoryByChannelId(command)
+
+        return PaginationResponse.ofChannelDonationHistory(result)
+    }
 }

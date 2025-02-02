@@ -1,0 +1,27 @@
+package io.livestreaming.api.commerce.presentation.web.response
+
+import io.livestreaming.api.commerce.domain.DonationCoinHistory
+import org.springframework.data.domain.Page
+
+data class PaginationResponse<T>(
+    val data: List<T>,
+    val page: Int,
+    val size: Int,
+    val totalPages: Int,
+    val totalElements: Int,
+) {
+    companion object {
+        fun ofChannelDonationHistory(page: Page<DonationCoinHistory>): PaginationResponse<ChannelDonationHistoryResponse> {
+
+            val data = page.content.map { ChannelDonationHistoryResponse.of(it) }
+
+            return PaginationResponse(
+                data = data,
+                page = page.number + 1,
+                size = page.size,
+                totalPages = page.totalPages,
+                totalElements = page.totalElements.toInt()
+            )
+        }
+    }
+}

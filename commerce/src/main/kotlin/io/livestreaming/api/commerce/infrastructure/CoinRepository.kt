@@ -81,7 +81,7 @@ class CoinRepository(
 
     }
 
-    override fun getDonationHistory(
+    override fun getDonationHistoryByMemberId(
         memberId: MemberId,
         page: Int,
         size: Int,
@@ -95,6 +95,15 @@ class CoinRepository(
             memberId = memberId.value,
             start = startDate,
             end = endDate.minusNanos(1),
+            pageable = pageable
+        ).map { it.toDomain() }
+    }
+
+    override fun getDonationHistoryByChannelId(channelId: ChannelId, page: Int, size: Int): Page<DonationCoinHistory> {
+        val pageable = PageRequest.of(page, size)
+
+        return donationCoinHistoryRepository.findByChannelId(
+            channelId = channelId.value,
             pageable = pageable
         ).map { it.toDomain() }
     }

@@ -40,12 +40,20 @@ class CoinService(
         )
     }
 
-    override fun readHistory(command: DonationCoinHistoryCommand): Page<DonationCoinHistory> {
-        return donationCoinPort.getDonationHistory(
+    override fun getDonationHistoryByMemberId(command: MemberDonationHistoryCommand): Page<DonationCoinHistory> {
+        return donationCoinPort.getDonationHistoryByMemberId(
             memberId = command.memberId,
-            size = command.size - 1,
-            page = command.page,
+            page = command.page - 1,
+            size = command.size,
             searchYear = command.searchYear
+        )
+    }
+
+    override fun getDonationHistoryByChannelId(command: ChannelDonationHistoryCommand): Page<DonationCoinHistory> {
+        return donationCoinPort.getDonationHistoryByChannelId(
+            channelId = command.channelId,
+            page = command.page - 1,
+            size = command.size,
         )
     }
 

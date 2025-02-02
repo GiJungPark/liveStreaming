@@ -5,5 +5,6 @@ import org.springframework.data.domain.Page
 
 interface DonationCoinUseCase {
     fun donation(command: DonationCoinCommand)
-    fun readHistory(command: DonationCoinHistoryCommand): Page<DonationCoinHistory>
+    fun getDonationHistoryByMemberId(command: MemberDonationHistoryCommand): Page<DonationCoinHistory>
+    fun getDonationHistoryByChannelId(command: ChannelDonationHistoryCommand): Page<DonationCoinHistory>
 }

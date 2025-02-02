@@ -44,7 +44,8 @@ class DonationCoinHistoryEntity private constructor(
             donationDate = donationAt,
             quantity = quantity,
             message = message,
-            channelId = channelId,
+            senderId = memberId,
+            receiverId = channelId,
         )
     }
 }

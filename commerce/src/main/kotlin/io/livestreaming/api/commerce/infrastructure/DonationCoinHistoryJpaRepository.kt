@@ -13,4 +13,6 @@ interface DonationCoinHistoryJpaRepository: JpaRepository<DonationCoinHistoryEnt
         end: LocalDateTime,
         pageable: Pageable
     ): Page<DonationCoinHistoryEntity>
+
+    fun findByChannelId(channelId: String, pageable: Pageable): Page<DonationCoinHistoryEntity>
 }

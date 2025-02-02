@@ -1,5 +1,6 @@
 package io.livestreaming.api.commerce.domain
 
+import io.livestreaming.api.common.domain.MemberId
 import java.math.BigInteger
 import java.time.LocalDateTime
 
@@ -7,20 +8,23 @@ class DonationCoinHistory private constructor(
     val donationDate: LocalDateTime,
     val quantity: BigInteger,
     val message: String,
-    val channelId: ChannelId
+    val senderId: MemberId,
+    val receiverId: ChannelId
 ) {
     companion object {
         fun of(
             donationDate: LocalDateTime,
             quantity: BigInteger,
             message: String,
-            channelId: String
+            senderId: String,
+            receiverId: String
         ): DonationCoinHistory {
             return DonationCoinHistory(
                 donationDate = donationDate,
                 quantity = quantity,
                 message = message,
-                channelId = ChannelId.of(channelId)
+                senderId = MemberId.of(senderId),
+                receiverId = ChannelId.of(receiverId)
             )
         }
     }
