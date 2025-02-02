@@ -14,8 +14,6 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Repository
 import java.math.BigInteger
-import java.time.LocalDateTime
-import java.time.Year
 
 @Repository
 class CoinRepository(
@@ -44,17 +42,12 @@ class CoinRepository(
     override fun getPurchaseHistory(
         memberId: MemberId,
         size: Int,
-        page: Int,
-        searchYear: Year
+        page: Int
     ): Page<PurchaseCoinHistory> {
-        val startDate = LocalDateTime.of(searchYear.value, 1, 1, 0, 0)
-        val endDate = LocalDateTime.of(searchYear.value + 1, 1, 1, 0, 0)
         val pageable = PageRequest.of(page, size)
 
-        return purchaseCoinHistoryRepository.findByMemberIdAndPurchaseAtBetween(
+        return purchaseCoinHistoryRepository.findByMemberId(
             memberId = memberId.value,
-            start = startDate,
-            end = endDate.minusNanos(1),
             pageable = pageable
         ).map { it.toDomain() }
     }

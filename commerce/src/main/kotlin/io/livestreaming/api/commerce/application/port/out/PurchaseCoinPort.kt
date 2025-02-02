@@ -9,5 +9,5 @@ import java.time.Year
 
 interface PurchaseCoinPort {
     fun purchase(memberId: MemberId, quantity: BigInteger, price: Money)
-    fun getPurchaseHistory(memberId: MemberId, size: Int, page: Int, searchYear: Year): Page<PurchaseCoinHistory>
+    fun getPurchaseHistory(memberId: MemberId, size: Int, page: Int): Page<PurchaseCoinHistory>
 }

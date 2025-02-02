@@ -26,9 +26,8 @@ class CoinService(
     override fun readHistory(command: PurchaseCoinHistoryCommand): Page<PurchaseCoinHistory> {
         return purchaseCoinPort.getPurchaseHistory(
             memberId = command.memberId,
-            size = command.size - 1,
-            page = command.page,
-            searchYear = command.searchYear
+            page = command.page - 1,
+            size = command.size
         )
     }
 
