@@ -14,7 +14,7 @@ class CommerceController(
     private val purchaseCoinUseCase: PurchaseCoinUseCase,
     private val donationCoinUseCase: DonationCoinUseCase,
 ) {
-    @PostMapping("/commerce/coin/purchase")
+    @PostMapping("/coin/members/{memberId}")
     fun purchaseCoin(@RequestBody request: PurchaseCoinRequest) {
         val command = PurchaseCoinCommand.of(
             memberId = request.memberId,
@@ -24,18 +24,7 @@ class CommerceController(
         purchaseCoinUseCase.purchase(command)
     }
 
-    @PostMapping("/commerce/coin/donation")
-    fun donationCoin(@RequestBody request: DonationCoinRequest) {
-        val command = DonationCoinCommand.of(
-            memberId = request.memberId,
-            channelId = request.channelId,
-            quantity = request.quantity
-        )
-
-        donationCoinUseCase.donation(command)
-    }
-
-    @GetMapping("/coin/members/{memberId}/histories")
+    @GetMapping("/coin/members/{memberId}")
     fun getPurchaseCoinHistory(
         @PathVariable("memberId") memberId: String,
         @RequestParam("page") page: Int,
@@ -49,6 +38,17 @@ class CommerceController(
         val result = purchaseCoinUseCase.readHistory(command)
 
         return PaginationResponse.ofPurchaseCoinHistory(result)
+    }
+
+    @PostMapping("/coin/members/{memberId}/donations")
+    fun donationCoin(@RequestBody request: DonationCoinRequest) {
+        val command = DonationCoinCommand.of(
+            memberId = request.memberId,
+            channelId = request.channelId,
+            quantity = request.quantity
+        )
+
+        donationCoinUseCase.donation(command)
     }
 
     @GetMapping("/coin/members/{memberId}/donations")
