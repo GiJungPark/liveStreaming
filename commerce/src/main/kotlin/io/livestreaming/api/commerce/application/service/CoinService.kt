@@ -7,16 +7,19 @@ import io.livestreaming.api.commerce.domain.CoinBalance
 import io.livestreaming.api.commerce.domain.DonationCoinHistory
 import io.livestreaming.api.commerce.domain.PurchaseCoinHistory
 import io.livestreaming.api.commerce.domain.Money
+import org.redisson.api.RedissonClient
 import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
+import java.util.concurrent.TimeUnit
 
 @Service
 class CoinService(
     private val purchaseCoinPort: PurchaseCoinPort,
-    private val donationCoinPort: DonationCoinPort
+    private val donationCoinPort: DonationCoinPort,
+    private val redissonClient: RedissonClient
 ) : PurchaseCoinUseCase, DonationCoinUseCase {
     override fun purchase(command: PurchaseCoinCommand) {
         val price = Money.of(calculateCoinPrice(command.quantity))
@@ -37,11 +40,25 @@ class CoinService(
     }
 
     override fun donation(command: DonationCoinCommand) {
-        donationCoinPort.donation(
-            memberId = command.memberId,
-            channelId = command.channelId,
-            quantity = command.quantity
-        )
+        val lock = redissonClient.getLock(command.channelId.value);
+
+        try {
+            val available = lock.tryLock(10, 1, TimeUnit.SECONDS)
+
+            if (!available) {
+                println("lock 획득 실패")
+                return
+            }
+
+            donationCoinPort.donation(
+                memberId = command.memberId,
+                channelId = command.channelId,
+                quantity = command.quantity
+            )
+
+        } finally {
+            lock.unlock()
+        }
     }
 
     override fun getDonationHistoryByMemberId(command: MemberDonationHistoryCommand): Page<DonationCoinHistory> {
