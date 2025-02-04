@@ -1,6 +1,6 @@
-package io.livestreaming.api.commerce.infrastructure
+package io.livestreaming.api.commerce.infrastructure.repository
 
-import io.livestreaming.api.commerce.infrastructure.entity.DonationCoinHistoryEntity
+import io.livestreaming.api.commerce.infrastructure.repository.entity.DonationCoinHistoryEntity
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository

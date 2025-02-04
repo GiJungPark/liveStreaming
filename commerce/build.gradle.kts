@@ -10,6 +10,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
     implementation("org.redisson:redisson-spring-boot-starter:3.44.0")
+    implementation("org.springframework.kafka:spring-kafka")
+    testImplementation("org.springframework.kafka:spring-kafka-test")
 
     runtimeOnly("com.mysql:mysql-connector-j")
 }

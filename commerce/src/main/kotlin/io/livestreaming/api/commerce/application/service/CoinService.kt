@@ -1,6 +1,7 @@
 package io.livestreaming.api.commerce.application.service
 
 import io.livestreaming.api.commerce.application.port.`in`.*
+import io.livestreaming.api.commerce.application.port.out.AddCoinBalancePort
 import io.livestreaming.api.commerce.application.port.out.DonationCoinPort
 import io.livestreaming.api.commerce.application.port.out.PurchaseCoinPort
 import io.livestreaming.api.commerce.domain.CoinBalance
@@ -19,8 +20,9 @@ import java.util.concurrent.TimeUnit
 class CoinService(
     private val purchaseCoinPort: PurchaseCoinPort,
     private val donationCoinPort: DonationCoinPort,
-    private val redissonClient: RedissonClient
-) : PurchaseCoinUseCase, DonationCoinUseCase {
+    private val redissonClient: RedissonClient,
+    private val addCoinBalancePort: AddCoinBalancePort
+) : PurchaseCoinUseCase, DonationCoinUseCase, AddCoinBalanceUseCase {
     override fun purchase(command: PurchaseCoinCommand) {
         val price = Money.of(calculateCoinPrice(command.quantity))
 
@@ -83,6 +85,14 @@ class CoinService(
         return calculatedPrice.setScale(0, RoundingMode.FLOOR).toBigInteger()
             .divide(BigInteger.TEN)
             .multiply(BigInteger.TEN)
+    }
+
+    override fun addMemberCoinBalance(command: AddMemberCoinBalanceCommand) {
+        addCoinBalancePort.addMemberBalance(command.memberId)
+    }
+
+    override fun addChannelCoinBalance(command: AddChannelCoinBalanceCommand) {
+        addCoinBalancePort.addChannelBalance(command.channelId)
     }
 
 }

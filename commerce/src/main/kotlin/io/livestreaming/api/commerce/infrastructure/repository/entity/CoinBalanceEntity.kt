@@ -1,4 +1,4 @@
-package io.livestreaming.api.commerce.infrastructure.entity
+package io.livestreaming.api.commerce.infrastructure.repository.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

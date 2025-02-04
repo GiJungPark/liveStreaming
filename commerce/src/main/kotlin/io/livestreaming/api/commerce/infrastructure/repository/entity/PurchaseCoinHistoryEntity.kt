@@ -1,4 +1,4 @@
-package io.livestreaming.api.commerce.infrastructure.entity
+package io.livestreaming.api.commerce.infrastructure.repository.entity
 
 import io.livestreaming.api.commerce.domain.Money
 import io.livestreaming.api.commerce.domain.PurchaseCoinHistory

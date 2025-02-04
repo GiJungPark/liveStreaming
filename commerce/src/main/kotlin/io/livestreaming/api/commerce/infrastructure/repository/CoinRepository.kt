@@ -1,10 +1,13 @@
-package io.livestreaming.api.commerce.infrastructure
+package io.livestreaming.api.commerce.infrastructure.repository
 
+import io.livestreaming.api.commerce.application.port.out.AddCoinBalancePort
 import io.livestreaming.api.commerce.application.port.out.DonationCoinPort
 import io.livestreaming.api.commerce.application.port.out.PurchaseCoinPort
 import io.livestreaming.api.commerce.domain.*
-import io.livestreaming.api.commerce.infrastructure.entity.DonationCoinHistoryEntity
-import io.livestreaming.api.commerce.infrastructure.entity.PurchaseCoinHistoryEntity
+import io.livestreaming.api.commerce.infrastructure.repository.entity.ChannelBalanceEntity
+import io.livestreaming.api.commerce.infrastructure.repository.entity.CoinBalanceEntity
+import io.livestreaming.api.commerce.infrastructure.repository.entity.DonationCoinHistoryEntity
+import io.livestreaming.api.commerce.infrastructure.repository.entity.PurchaseCoinHistoryEntity
 import io.livestreaming.api.common.domain.MemberId
 import jakarta.transaction.Transactional
 import org.springframework.data.domain.Page
@@ -18,7 +21,7 @@ class CoinRepository(
     private val channelCoinJpaRepository: ChannelCoinBalanceJpaRepository,
     private val purchaseCoinHistoryRepository: PurchaseCoinHistoryJpaRepository,
     private val donationCoinHistoryRepository: DonationCoinHistoryJpaRepository,
-) : PurchaseCoinPort, DonationCoinPort {
+) : PurchaseCoinPort, DonationCoinPort, AddCoinBalancePort {
 
     @Transactional
     override fun purchase(memberId: MemberId, quantity: BigInteger, price: Money) {
@@ -99,5 +102,17 @@ class CoinRepository(
             channelId = channelId.value,
             pageable = pageable
         ).map { it.toDomain() }
+    }
+
+    override fun addMemberBalance(memberId: MemberId) {
+        val memberCoinBalanceEntity = CoinBalanceEntity.of(memberId.value, BigInteger.ZERO)
+
+        coinJpaRepository.save(memberCoinBalanceEntity)
+    }
+
+    override fun addChannelBalance(channelId: ChannelId) {
+        val channelCoinBalanceEntity = ChannelBalanceEntity.of(channelId.value, BigInteger.ZERO)
+
+        channelCoinJpaRepository.save(channelCoinBalanceEntity)
     }
 }
