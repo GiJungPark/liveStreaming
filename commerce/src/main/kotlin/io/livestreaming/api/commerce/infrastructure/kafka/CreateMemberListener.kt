@@ -1,27 +1,27 @@
 package io.livestreaming.api.commerce.infrastructure.kafka
 
-import io.livestreaming.api.commerce.application.port.`in`.AddChannelCoinBalanceCommand
-import io.livestreaming.api.commerce.application.port.`in`.AddCoinBalanceUseCase
-import io.livestreaming.api.commerce.application.port.`in`.AddMemberCoinBalanceCommand
+import io.livestreaming.api.commerce.application.port.`in`.CreateChannelCoinBalanceCommand
+import io.livestreaming.api.commerce.application.port.`in`.CreateCoinBalanceUseCase
+import io.livestreaming.api.commerce.application.port.`in`.CreateMemberCoinBalanceCommand
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
 @Component
 class CreateMemberListener(
-    private val addCoinBalanceUseCase: AddCoinBalanceUseCase
+    private val createCoinBalanceUseCase: CreateCoinBalanceUseCase
 ) {
     @KafkaListener(topics = ["create-member"], groupId = "commerce-service")
     @Transactional
     fun listener(data: String) {
-        val addMemberBalanceCommand = AddMemberCoinBalanceCommand.of(
+        val addMemberBalanceCommand = CreateMemberCoinBalanceCommand.of(
             memberId = data
         )
-        addCoinBalanceUseCase.addMemberCoinBalance(addMemberBalanceCommand)
+        createCoinBalanceUseCase.createMemberCoinBalance(addMemberBalanceCommand)
 
-        val addChannelBalanceCommand = AddChannelCoinBalanceCommand.of(
+        val addChannelBalanceCommand = CreateChannelCoinBalanceCommand.of(
             channelId = data
         )
-        addCoinBalanceUseCase.addChannelCoinBalance(addChannelBalanceCommand)
+        createCoinBalanceUseCase.createChannelCoinBalance(addChannelBalanceCommand)
     }
 }

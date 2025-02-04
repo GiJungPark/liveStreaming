@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class CommerceController(
     private val purchaseCoinUseCase: PurchaseCoinUseCase,
-    private val donationCoinUseCase: DonationCoinUseCase,
+    private val coinHistoryQuery: CoinHistoryQuery,
+    private val coinBalanceQuery: CoinBalanceQuery,
+    private val donationUseCase: DonationUseCase,
 ) {
     @PostMapping("/coin/members/{memberId}")
     fun purchaseCoin(@RequestBody request: PurchaseCoinRequest) {
@@ -27,22 +29,22 @@ class CommerceController(
         @RequestParam("page") page: Int,
         @RequestParam("size") size: Int,
     ): PaginationResponse<PurchaseCoinHistoryResponse> {
-        val command = PurchaseCoinHistoryCommand.of(
+        val query = PurchaseCoinHistoryQuery.of(
             memberId = memberId,
             page = page,
             size = size
         )
-        val result = purchaseCoinUseCase.readHistory(command)
+        val result = coinHistoryQuery.getPurchaseHistory(query)
 
         return PaginationResponse.ofPurchaseCoinHistory(result)
     }
 
     @GetMapping("/coin/members/{memberId}/remaining")
     fun getCoinRemaining(@PathVariable("memberId") memberId: String): MemberRemainingCoinResponse {
-        val command = MemberRemainingCoinCommand.of(
+        val query = MemberCoinBalanceQuery.of(
             memberId = memberId
         )
-        val result = purchaseCoinUseCase.getMemberRemainingCoin(command)
+        val result = coinBalanceQuery.getMemberCoinBalance(query)
 
         return MemberRemainingCoinResponse.of(result)
     }
@@ -55,7 +57,7 @@ class CommerceController(
             quantity = request.quantity
         )
 
-        donationCoinUseCase.donation(command)
+        donationUseCase.donation(command)
     }
 
     @GetMapping("/coin/members/{memberId}/donations")
@@ -64,12 +66,12 @@ class CommerceController(
         @RequestParam("page") page: Int,
         @RequestParam("size") size: Int,
     ): PaginationResponse<MemberDonationHistoryResponse> {
-        val command = MemberDonationHistoryCommand.of(
+        val query = MemberDonationHistoryQuery.of(
             memberId = memberId,
             page = page,
             size = size,
         )
-        val result = donationCoinUseCase.getDonationHistoryByMemberId(command)
+        val result = coinHistoryQuery.getDonationHistoryByMemberId(query)
 
         return PaginationResponse.ofMemberDonationHistory(result)
     }
@@ -80,12 +82,12 @@ class CommerceController(
         @RequestParam("page") page: Int,
         @RequestParam("size") size: Int,
     ): PaginationResponse<ChannelDonationHistoryResponse> {
-        val command = ChannelDonationHistoryCommand.of(
+        val query = ChannelDonationHistoryQuery.of(
             channelId = channelId,
             page = page,
             size = size
         )
-        val result = donationCoinUseCase.getDonationHistoryByChannelId(command)
+        val result = coinHistoryQuery.getDonationHistoryByChannelId(query)
 
         return PaginationResponse.ofChannelDonationHistory(result)
     }

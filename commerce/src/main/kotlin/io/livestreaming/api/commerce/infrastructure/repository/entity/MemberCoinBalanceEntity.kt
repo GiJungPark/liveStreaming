@@ -7,10 +7,10 @@ import jakarta.persistence.Table
 import java.math.BigInteger
 
 @Entity
-@Table(name = "channel_coin_balance")
-class ChannelBalanceEntity private constructor(
-    @Id @Column(name = "channel_id", nullable = false)
-    val channelId: String,
+@Table(name = "member_coin_balance")
+class MemberCoinBalanceEntity private constructor(
+    @Id @Column(name = "member_id", nullable = false)
+    val memberId: String,
 
     @Column(name = "amount", nullable = false)
     var amount: BigInteger,
@@ -18,7 +18,7 @@ class ChannelBalanceEntity private constructor(
     protected constructor() : this("", BigInteger.ZERO)
 
     companion object {
-        fun of(channelId: String, amount: BigInteger) = ChannelBalanceEntity(channelId, amount)
+        fun of(memberId: String, amount: BigInteger) = MemberCoinBalanceEntity(memberId, amount)
     }
 
     fun add(amount: BigInteger) {
@@ -32,4 +32,5 @@ class ChannelBalanceEntity private constructor(
 
         this.amount -= amount
     }
+
 }
