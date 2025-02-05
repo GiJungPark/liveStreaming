@@ -91,4 +91,14 @@ class CommerceController(
 
         return PaginationResponse.ofChannelDonationHistory(result)
     }
+
+    @GetMapping("/coin/channels/{channelId}")
+    fun getChannelCoinRemaining(@PathVariable("channelId") channelId: String): ChannelRemainingCoinResponse {
+        val query = ChannelCoinBalanceQuery.of(
+            channelId = channelId
+        )
+        val result = coinBalanceQuery.getChannelCoinBalance(query)
+
+        return ChannelRemainingCoinResponse.of(result)
+    }
 }

@@ -4,12 +4,7 @@ import io.livestreaming.api.commerce.application.port.out.*
 import io.livestreaming.api.commerce.domain.*
 import io.livestreaming.api.commerce.infrastructure.repository.entity.ChannelCoinBalanceEntity
 import io.livestreaming.api.commerce.infrastructure.repository.entity.MemberCoinBalanceEntity
-import io.livestreaming.api.commerce.infrastructure.repository.entity.DonationCoinHistoryEntity
-import io.livestreaming.api.commerce.infrastructure.repository.entity.PurchaseCoinHistoryEntity
 import io.livestreaming.api.common.domain.MemberId
-import jakarta.transaction.Transactional
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Repository
 import java.math.BigInteger
 
@@ -31,7 +26,7 @@ class CoinBalanceRepository(
         channelCoinBalanceJpaRepository.save(channelCoinBalanceEntity)
     }
 
-    override fun getCoinBalanceByMemberId(memberId: MemberId): CoinBalance {
+    override fun getMemberBalanceByMemberId(memberId: MemberId): CoinBalance {
         val memberCoinBalanceEntity = memberCoinBalanceJpaRepository.findById(memberId.value)
 
         if (memberCoinBalanceEntity.isPresent) {

@@ -27,7 +27,7 @@ class DonationService(
                 return
             }
 
-            val memberCoinBalance = getCoinBalancePort.getCoinBalanceByMemberId(command.memberId)
+            val memberCoinBalance = getCoinBalancePort.getMemberBalanceByMemberId(command.memberId)
             val channelCoinBalance = getCoinBalancePort.getChannelBalanceByChannelId(command.channelId)
 
             memberCoinBalance.sub(command.quantity)

@@ -18,7 +18,7 @@ class PurchaseCoinService(
     private val createCoinHistoryPort: CreateCoinHistoryPort,
 ) : PurchaseCoinUseCase {
     override fun purchase(command: PurchaseCoinCommand) {
-        val memberCoinBalance = getCoinBalancePort.getCoinBalanceByMemberId(command.memberId)
+        val memberCoinBalance = getCoinBalancePort.getMemberBalanceByMemberId(command.memberId)
         val remaining = memberCoinBalance.quantity
 
         memberCoinBalance.add(command.quantity)
