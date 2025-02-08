@@ -7,6 +7,7 @@ import io.livestreaming.api.commerce.domain.DonationCoinHistory
 import io.livestreaming.api.commerce.domain.Money
 import io.livestreaming.api.commerce.domain.PurchaseCoinHistory
 import io.livestreaming.api.commerce.infrastructure.repository.entity.DonationCoinHistoryEntity
+import io.livestreaming.api.commerce.infrastructure.repository.entity.ExchangeCoinHistoryEntity
 import io.livestreaming.api.commerce.infrastructure.repository.entity.PurchaseCoinHistoryEntity
 import io.livestreaming.api.common.domain.MemberId
 import org.springframework.data.domain.Page
@@ -18,6 +19,7 @@ import java.math.BigInteger
 class CoinHistoryRepository(
     private val purchaseCoinHistoryRepository: PurchaseCoinHistoryJpaRepository,
     private val donationCoinHistoryRepository: DonationCoinHistoryJpaRepository,
+    private val exchangeCoinHistoryRepository: ExchangeCoinHistoryJpaRepository,
 ) : CreateCoinHistoryPort, GetCoinHistoryPort {
 
     override fun createPurchaseHistory(memberId: MemberId, quantity: BigInteger, remaining: BigInteger, price: Money) {
@@ -39,6 +41,17 @@ class CoinHistoryRepository(
         )
 
         donationCoinHistoryRepository.save(donationCoinHistoryEntity)
+    }
+
+    override fun createExchangeHistory(channelId: ChannelId, quantity: BigInteger, price: Money, remaining: BigInteger) {
+        val exchangeCoinHistoryEntity = ExchangeCoinHistoryEntity.of(
+            channelId = channelId,
+            quantity = quantity,
+            price = price,
+            remaining = remaining,
+        )
+
+        exchangeCoinHistoryRepository.save(exchangeCoinHistoryEntity)
     }
 
     override fun getPurchaseHistoryByMemberId(memberId: MemberId, size: Int, page: Int): Page<PurchaseCoinHistory> {

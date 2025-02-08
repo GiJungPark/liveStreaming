@@ -2,6 +2,7 @@ package io.livestreaming.api.commerce.presentation.web
 
 import io.livestreaming.api.commerce.application.port.`in`.*
 import io.livestreaming.api.commerce.presentation.web.request.DonationCoinRequest
+import io.livestreaming.api.commerce.presentation.web.request.ExchangeDonationCoinRequest
 import io.livestreaming.api.commerce.presentation.web.request.PurchaseCoinRequest
 import io.livestreaming.api.commerce.presentation.web.response.*
 import org.springframework.web.bind.annotation.*
@@ -9,9 +10,10 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class CommerceController(
     private val purchaseCoinUseCase: PurchaseCoinUseCase,
-    private val coinHistoryQuery: CoinHistoryQuery,
-    private val coinBalanceQuery: CoinBalanceQuery,
     private val donationUseCase: DonationUseCase,
+    private val exchangeDonationCoin: ExchangeDonationCoinUseCase,
+    private val coinBalanceQuery: CoinBalanceQuery,
+    private val coinHistoryQuery: CoinHistoryQuery,
 ) {
     @PostMapping("/coin/members/{memberId}")
     fun purchaseCoin(@RequestBody request: PurchaseCoinRequest) {
@@ -100,5 +102,17 @@ class CommerceController(
         val result = coinBalanceQuery.getChannelCoinBalance(query)
 
         return ChannelRemainingCoinResponse.of(result)
+    }
+
+    @PostMapping("/coin/channels/{channelId}/exchange")
+    fun exchangeDonationCoin(
+        @PathVariable("channelId") channelId: String,
+        @RequestBody request: ExchangeDonationCoinRequest
+    ) {
+        val command = ExchangeDonationCoinCommand.of(
+            channelId = channelId,
+            quantity = request.quantity
+        )
+        exchangeDonationCoin.exchange(command)
     }
 }
