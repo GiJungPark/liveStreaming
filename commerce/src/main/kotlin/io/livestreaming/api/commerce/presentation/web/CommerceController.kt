@@ -115,4 +115,21 @@ class CommerceController(
         )
         exchangeDonationCoin.exchange(command)
     }
+
+    @GetMapping("/coin/channels/{channelId}/exchange")
+    fun exchangeDonationCoinHistory(
+        @PathVariable("channelId") channelId: String,
+        @RequestParam("page") page: Int,
+        @RequestParam("size") size: Int,
+    ): PaginationResponse<ExchangeCoinHistoryResponse> {
+        val query = ChannelExchangeHistoryQuery.of(
+            channelId = channelId,
+            page = page,
+            size = size
+        )
+
+        val result = coinHistoryQuery.getExchangeHistory(query)
+
+        return PaginationResponse.ofExchangeCoinHistory(result)
+    }
 }

@@ -2,10 +2,7 @@ package io.livestreaming.api.commerce.infrastructure.repository
 
 import io.livestreaming.api.commerce.application.port.out.CreateCoinHistoryPort
 import io.livestreaming.api.commerce.application.port.out.GetCoinHistoryPort
-import io.livestreaming.api.commerce.domain.ChannelId
-import io.livestreaming.api.commerce.domain.DonationCoinHistory
-import io.livestreaming.api.commerce.domain.Money
-import io.livestreaming.api.commerce.domain.PurchaseCoinHistory
+import io.livestreaming.api.commerce.domain.*
 import io.livestreaming.api.commerce.infrastructure.repository.entity.DonationCoinHistoryEntity
 import io.livestreaming.api.commerce.infrastructure.repository.entity.ExchangeCoinHistoryEntity
 import io.livestreaming.api.commerce.infrastructure.repository.entity.PurchaseCoinHistoryEntity
@@ -76,6 +73,15 @@ class CoinHistoryRepository(
         val pageable = PageRequest.of(page - 1, size)
 
         return donationCoinHistoryRepository.findByChannelId(
+            channelId = channelId.value,
+            pageable = pageable
+        ).map { it.toDomain() }
+    }
+
+    override fun getExchangeHistoryByChannelId(channelId: ChannelId, size: Int, page: Int): Page<ExchangeCoinHistory> {
+        val pageable = PageRequest.of(page - 1, size)
+
+        return exchangeCoinHistoryRepository.findByChannelId(
             channelId = channelId.value,
             pageable = pageable
         ).map { it.toDomain() }

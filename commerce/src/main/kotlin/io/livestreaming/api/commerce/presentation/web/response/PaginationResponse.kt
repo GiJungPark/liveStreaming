@@ -1,6 +1,7 @@
 package io.livestreaming.api.commerce.presentation.web.response
 
 import io.livestreaming.api.commerce.domain.DonationCoinHistory
+import io.livestreaming.api.commerce.domain.ExchangeCoinHistory
 import io.livestreaming.api.commerce.domain.PurchaseCoinHistory
 import org.springframework.data.domain.Page
 
@@ -38,6 +39,18 @@ data class PaginationResponse<T>(
 
         fun ofPurchaseCoinHistory(page: Page<PurchaseCoinHistory>): PaginationResponse<PurchaseCoinHistoryResponse> {
             val data = page.content.map { PurchaseCoinHistoryResponse.of(it) }
+
+            return PaginationResponse(
+                data = data,
+                page = page.number + 1,
+                size = page.size,
+                totalPages = page.totalPages,
+                totalElements = page.totalElements.toInt()
+            )
+        }
+
+        fun ofExchangeCoinHistory(page: Page<ExchangeCoinHistory>): PaginationResponse<ExchangeCoinHistoryResponse> {
+            val data = page.content.map { ExchangeCoinHistoryResponse.of(it) }
 
             return PaginationResponse(
                 data = data,
