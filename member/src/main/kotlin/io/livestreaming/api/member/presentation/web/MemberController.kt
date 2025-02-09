@@ -51,7 +51,7 @@ class MemberController(
         updateMemberUseCase.updatePassword(command)
     }
 
-    @PutMapping("/{profile")
+    @PutMapping("/{profile}")
     fun updateProfile(
         @RequestBody request: UpdateMemberProfileRequest,
     ) {
