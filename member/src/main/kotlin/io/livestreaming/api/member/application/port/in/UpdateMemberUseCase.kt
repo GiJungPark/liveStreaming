@@ -1,4 +1,4 @@
-package io.livestreaming.api.member.application
+package io.livestreaming.api.member.application.port.`in`
 
 import io.livestreaming.api.common.domain.MemberId
 

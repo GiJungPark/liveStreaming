@@ -1,6 +1,7 @@
 package io.livestreaming.api.member.presentation.web
 
-import io.livestreaming.api.member.application.*
+import io.livestreaming.api.member.application.`in`.*
+import io.livestreaming.api.member.application.port.`in`.*
 import io.livestreaming.api.member.presentation.web.request.*
 import org.springframework.web.bind.annotation.*
 

@@ -1,6 +1,9 @@
-package io.livestreaming.api.member.application
+package io.livestreaming.api.member.application.service
 
-import io.livestreaming.api.member.application.out.GetMemberPort
+import io.livestreaming.api.member.application.port.`in`.CheckEmailCommand
+import io.livestreaming.api.member.application.port.`in`.CheckNicknameCommand
+import io.livestreaming.api.member.application.port.`in`.ReadMemberUseCase
+import io.livestreaming.api.member.application.port.out.GetMemberPort
 import org.springframework.stereotype.Service
 
 @Service

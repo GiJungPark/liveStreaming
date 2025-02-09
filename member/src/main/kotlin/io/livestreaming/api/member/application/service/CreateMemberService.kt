@@ -1,7 +1,9 @@
-package io.livestreaming.api.member.application
+package io.livestreaming.api.member.application.service
 
 import io.livestreaming.api.common.domain.Image
 import io.livestreaming.api.common.domain.MemberId
+import io.livestreaming.api.member.application.port.`in`.CreateMemberCommand
+import io.livestreaming.api.member.application.port.`in`.CreateMemberUseCase
 import io.livestreaming.api.member.domain.*
 import io.livestreaming.api.member.util.id.IdGenerator
 import org.springframework.stereotype.Service
