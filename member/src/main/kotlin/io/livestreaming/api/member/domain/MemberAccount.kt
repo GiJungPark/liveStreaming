@@ -5,16 +5,20 @@ class MemberAccount private constructor(
     password: Password,
 ) {
     private var _email: Email = email
-    private val email: Email
+    val email: Email
         get() = _email
 
     private var _password: Password = password
-    private val password: Password
+    val password: Password
         get() = _password
 
     companion object {
         fun of(email: Email, password: Password): MemberAccount {
             return MemberAccount(email = email, password = password)
+        }
+
+        fun of(email: String, password: String): MemberAccount {
+            return MemberAccount(email = Email.of(email), password = Password.of(password))
         }
     }
 
