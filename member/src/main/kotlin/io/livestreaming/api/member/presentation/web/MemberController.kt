@@ -1,17 +1,17 @@
 package io.livestreaming.api.member.presentation.web
 
-import io.livestreaming.api.member.application.`in`.*
 import io.livestreaming.api.member.application.port.`in`.*
 import io.livestreaming.api.member.presentation.web.request.*
+import io.livestreaming.api.member.presentation.web.response.AvailabilityResponse
 import org.springframework.web.bind.annotation.*
 
-@RestController("/member")
+@RestController
 class MemberController(
     private val createMemberUseCase: CreateMemberUseCase,
     private val readMemberUseCase: ReadMemberUseCase,
     private val updateMemberUseCase: UpdateMemberUseCase,
 ) {
-    @PostMapping
+    @PostMapping("/member")
     fun createMember(@RequestBody request: CreateMemberRequest) {
         val command = CreateMemberCommand.of(
             email = request.email,
@@ -22,28 +22,26 @@ class MemberController(
         createMemberUseCase.create(command)
     }
 
-    @GetMapping("/check-email")
-    fun checkEmail(
-        @RequestParam email: String,
-    ) {
+    @GetMapping("/member/check-email")
+    fun checkEmail(@RequestParam email: String): AvailabilityResponse {
         val command = CheckEmailCommand.of(email)
 
-        readMemberUseCase.isAvailableEmail(command)
+        val result = readMemberUseCase.isAvailableEmail(command)
+
+        return AvailabilityResponse(result)
     }
 
-    @GetMapping("/check-nickname")
-    fun checkNickname(
-        @RequestParam nickname: String,
-    ) {
+    @GetMapping("/member/check-nickname")
+    fun checkNickname(@RequestParam nickname: String): AvailabilityResponse {
         val command = CheckNicknameCommand.of(nickname)
 
-        readMemberUseCase.isAvailableNickname(command)
+        val result = readMemberUseCase.isAvailableNickname(command)
+
+        return AvailabilityResponse(result)
     }
 
-    @PutMapping("/password")
-    fun updatePassword(
-        @RequestBody request: UpdateMemberPasswordRequest,
-    ) {
+    @PutMapping("/member/password")
+    fun updatePassword(@RequestBody request: UpdateMemberPasswordRequest) {
         val command = UpdateMemberPasswordCommand.of(
             id = request.memberId,
             password = request.password
@@ -52,10 +50,8 @@ class MemberController(
         updateMemberUseCase.updatePassword(command)
     }
 
-    @PutMapping("/{profile}")
-    fun updateProfile(
-        @RequestBody request: UpdateMemberProfileRequest,
-    ) {
+    @PutMapping("/member/profile")
+    fun updateProfile(@RequestBody request: UpdateMemberProfileRequest) {
         val command = UpdateMemberProfileCommand.of(
             id = request.memberId,
             nickname = request.nickname,
